@@ -1,5 +1,5 @@
 /*
- * This script is not finished, but it will create a random name from Elites Galaxies
+ * This script creates a random name with the generator from Elite`s Galaxies
  * 
  * usage: just call
  * genNames()
@@ -17,6 +17,10 @@ var seed0= 0;
 var seed1= 0;
 var seed2= 0;
 
+seed0 = 0x5a4a;
+seed1 = 0x0248;
+seed2 = 0xb753;
+  
 function rotatel(x)
 {
     var tmp = (x & 255) * 2;
@@ -50,54 +54,40 @@ function tweakseed()
     seed2 = tmp;
 }
 
-function makename(pairs)
+function makename()
 {
+    // original LPT-code was: pairs = digrams[24..<1];
+    var pairs = digrams.substring(24)
     var name = "";
     var pair1, pair2, pair3, pair4;
-    var longname;
+    var longname, verylongname;
 
     longname = seed0 & 64;
+    verylongname = seed0 & 64;
 
     pair1 = 2 * ((seed2 / 256) & 31); tweakseed();
     pair2 = 2 * ((seed2 / 256) & 31); tweakseed();
     pair3 = 2 * ((seed2 / 256) & 31); tweakseed();
     pair4 = 2 * ((seed2 / 256) & 31); tweakseed();
+    pair5 = 2 * ((seed2 / 256) & 31); tweakseed();
 
-    name += sprintf("%c", pairs[pair1]);
-    name += sprintf("%c", pairs[pair1 + 1]);
-    name += sprintf("%c", pairs[pair2]);
-    name += sprintf("%c", pairs[pair2 + 1]);
-    name += sprintf("%c", pairs[pair3]);
-    name += sprintf("%c", pairs[pair3 + 1]);
+    name += ( pairs[pair1]);
+    name += ( pairs[pair1 + 1]);
+    name += ( pairs[pair2]);
+    name += ( pairs[pair2 + 1]);
+    name += ( pairs[pair3]);
+    name += ( pairs[pair3 + 1]);
 
-    if(longname)
+    if(longname || verylongname)
     {
-        name += sprintf("%c", pairs[pair4]);
-        name += sprintf("%c", pairs[pair4 + 1]);
+        name += ( pairs[pair4]);
+        name += ( pairs[pair4 + 1]);
     }
-
-    name = implode(explode(name, "."), "");
-
-    return capitalize(name);
+    if(verylongname)
+    {
+        name += ( pairs[pair5]);
+        name += ( pairs[pair5 + 1]);
+    }
+    return name.replace(".","");
 }
 
-function genNames()
-{
-    var names = ({ });
-    var pairs;
-    var num = 1;
-
-    digrams = lower_case(digrams);
-    pairs = digrams[24..<1];
-
-    seed0 = 0x5a4a;
-    seed1 = 0x0248;
-    seed2 = 0xb753;
-
-    for(var i = 1; i < num; ++i) next();
-
-    for(i = 0; i < 256; ++i)
-        names += ({ makename(pairs) });
-
-    return implode(names[0..<2], ", ") + " and " + names[<1] + "\n";
-}
