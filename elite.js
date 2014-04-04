@@ -1,3 +1,11 @@
+/*
+ * This script is not finished, but it will create a random name from Elites Galaxies
+ * 
+ * usage: just call
+ * genNames()
+ * 
+ */
+
 var digrams =
   "ABOUSEITILETSTONLONUTHNO" +
   "..LEXEGEZACEBISO" +
